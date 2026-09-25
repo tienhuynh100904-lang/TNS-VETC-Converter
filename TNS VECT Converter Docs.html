@@ -1,0 +1,587 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>TNS VECT Converter Docs</title>
+<style>
+  :root{
+    --red:#7c1822; --red-mid:#B02F27; --red-soft:#a5202d;
+    --gold:#D09446; --gold-dark:#9C6A36; --gold-light:#FFCB71; --cream:#F1E0B7;
+    --ink:#221615; --ink-soft:#5b4a45; --line:#e7ddd0;
+    --bg:#faf6ef; --surface:#ffffff; --code-bg:#f5efe2;
+    --ok:#1f7a4a; --warn:#9c6a1f; --err:#a5202d;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#f0e6de; --ink-soft:#c7b6ac; --line:#4a3a34;
+      --bg:#211613; --surface:#2a1c19; --code-bg:#1c1210;
+      --gold:#e0b064; --gold-light:#ffd98c; --cream:#3a2c22;
+      --red-mid:#d1584c; --ok:#5fbf8a; --warn:#e0b064; --err:#e08a80;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#f0e6de; --ink-soft:#c7b6ac; --line:#4a3a34;
+    --bg:#211613; --surface:#2a1c19; --code-bg:#1c1210;
+    --gold:#e0b064; --gold-light:#ffd98c; --cream:#3a2c22;
+    --red-mid:#d1584c; --ok:#5fbf8a; --warn:#e0b064; --err:#e08a80;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter','Segoe UI',system-ui,sans-serif;
+    padding-inline:16px;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding-block:28px 60px}
+
+  .masthead{
+    display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;
+  }
+  .logo{
+    width:44px;height:44px;border-radius:10px;background:var(--red-mid);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    box-shadow:0 2px 8px rgba(124,24,34,.25);
+  }
+  .logo svg{width:26px;height:26px}
+  .masthead h1{font-size:21px;margin:0;line-height:1.25}
+  .masthead .sub{font-size:13px;color:var(--ink-soft);margin-top:2px}
+
+  .tabs{
+    display:flex;gap:4px;border-bottom:1px solid var(--line);
+    margin-bottom:28px;position:sticky;top:0;background:var(--bg);
+    padding-top:6px;z-index:5;
+  }
+  .tab{
+    font:inherit;font-size:14px;font-weight:600;color:var(--ink-soft);
+    background:none;border:none;padding:10px 16px;cursor:pointer;
+    border-bottom:2px solid transparent;margin-bottom:-1px;
+  }
+  .tab[aria-selected="true"]{color:var(--red-mid);border-bottom-color:var(--red-mid)}
+  .tab:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
+
+  section[role="tabpanel"][hidden]{display:none}
+
+  h2{
+    font-size:19px;margin:38px 0 12px;padding-top:14px;
+    border-top:1px solid var(--line);color:var(--red-mid);
+  }
+  h2:first-of-type{border-top:none;padding-top:0;margin-top:0}
+  h3{font-size:15.5px;margin:22px 0 8px}
+  p{line-height:1.65;font-size:14.5px;margin:0 0 12px}
+  ul,ol{line-height:1.65;font-size:14.5px;padding-left:22px;margin:0 0 14px}
+  li{margin-bottom:5px}
+  strong{color:var(--ink)}
+  code{
+    font-family:'JetBrains Mono','Consolas',monospace;font-size:12.5px;
+    background:var(--code-bg);padding:1.5px 5px;border-radius:4px;
+    border:1px solid var(--line);
+  }
+  a{color:var(--red-mid)}
+
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:16px 18px;margin:14px 0;
+  }
+  .card.step{display:flex;gap:14px;align-items:flex-start}
+  .step-num{
+    flex-shrink:0;width:26px;height:26px;border-radius:50%;
+    background:var(--cream);color:var(--gold-dark);font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-body{flex:1;min-width:0}
+  .step-body p:last-child{margin-bottom:0}
+
+  .badge{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.3px;
+    padding:2px 8px;border-radius:20px;text-transform:uppercase;
+  }
+  .badge-ok{background:color-mix(in srgb, var(--ok) 16%, transparent);color:var(--ok)}
+  .badge-warn{background:color-mix(in srgb, var(--warn) 16%, transparent);color:var(--warn)}
+  .badge-err{background:color-mix(in srgb, var(--err) 16%, transparent);color:var(--err)}
+
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin:14px 0}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  tr:last-child td{border-bottom:none}
+
+  .callout{
+    border-left:3px solid var(--gold-dark);background:var(--cream);
+    padding:12px 16px;border-radius:0 8px 8px 0;font-size:14px;margin:16px 0;
+    color:var(--ink);
+  }
+  .callout.warn{border-left-color:var(--err)}
+  .callout p{margin:0}
+  .callout p+p{margin-top:8px}
+
+  pre{
+    background:var(--code-bg);border:1px solid var(--line);border-radius:8px;
+    padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.6;
+    font-family:'JetBrains Mono','Consolas',monospace;margin:14px 0;
+  }
+  pre code{background:none;border:none;padding:0}
+
+  .filetree{font-family:'JetBrains Mono','Consolas',monospace;font-size:12.5px;line-height:1.75}
+
+  .diagram{
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:18px;margin:16px 0;overflow-x:auto;
+  }
+  .diagram svg{display:block;margin:0 auto;min-width:560px}
+
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+  .toc a{
+    font-size:12.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;
+    background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:20px;
+  }
+  .toc a:hover{color:var(--red-mid);border-color:var(--red-mid)}
+
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:13.5px;margin:12px 0}
+  .kv dt{color:var(--ink-soft);font-weight:600}
+  .kv dd{margin:0}
+
+  @media (max-width:600px){
+    .diagram svg{min-width:480px}
+    table{font-size:12.5px}
+    .tabs{overflow-x:auto}
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v4H4z"/><path d="M9 8v12M15 8v12"/></svg>
+    </div>
+    <div>
+      <h1>TNS VECT Converter</h1>
+      <div class="sub">Tài liệu sử dụng &amp; tài liệu kiến trúc hệ thống</div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-user" aria-selected="true" aria-controls="panel-user">Tài liệu sử dụng</button>
+    <button class="tab" role="tab" id="tab-arch" aria-selected="false" aria-controls="panel-arch" tabindex="-1">Tài liệu kiến trúc</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- USER GUIDE                                                    -->
+  <!-- ============================================================ -->
+  <section role="tabpanel" id="panel-user" aria-labelledby="tab-user">
+
+    <div class="toc">
+      <a href="#u-gioithieu">Giới thiệu</a>
+      <a href="#u-suddung">Cách sử dụng</a>
+      <a href="#u-canhbao">Các cảnh báo &amp; ý nghĩa</a>
+      <a href="#u-gioihan">Giới hạn hiện tại</a>
+      <a href="#u-hoi">Câu hỏi thường gặp</a>
+    </div>
+
+    <h2 id="u-gioithieu">Giới thiệu</h2>
+    <p>
+      TNS VECT Converter là công cụ chạy hoàn toàn trên trình duyệt, giúp chuyển đổi
+      hàng loạt hóa đơn PDF của VETC (thu phí tự động) thành một file Excel tổng hợp,
+      theo đúng định dạng "Bảng kê hóa đơn điện tử" quen thuộc.
+    </p>
+    <ul>
+      <li>Không cần cài đặt phần mềm, không upload dữ liệu lên máy chủ nào — toàn bộ xử lý diễn ra ngay trên máy của bạn.</li>
+      <li>Hỗ trợ xử lý cùng lúc từ vài file đến hàng nghìn file.</li>
+      <li>Có thể xem trước và sửa tay dữ liệu ngay trên bảng trước khi xuất file.</li>
+    </ul>
+
+    <h2 id="u-suddung">Cách sử dụng</h2>
+
+    <div class="card step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <p><strong>Đưa file PDF vào công cụ</strong> bằng một trong ba cách:</p>
+        <ul>
+          <li>Kéo — thả file hoặc cả thư mục vào khung có viền đứt nét.</li>
+          <li>Bấm <strong>Chọn file PDF</strong> để chọn nhiều file cùng lúc.</li>
+          <li>Bấm <strong>Chọn thư mục</strong> để lấy toàn bộ PDF trong một thư mục (kể cả thư mục con).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <p><strong>Chờ xử lý.</strong> Thanh tiến trình hiển thị số file đã xử lý / tổng số file.
+        Với vài nghìn file, quá trình có thể mất vài phút — nếu vượt 3.000 file, công cụ sẽ hỏi
+        xác nhận trước khi bắt đầu vì tốn nhiều bộ nhớ trình duyệt.</p>
+      </div>
+    </div>
+
+    <div class="card step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <p><strong>Kiểm tra kết quả</strong> ở ba khu vực có thể xuất hiện sau khi xử lý xong:</p>
+        <ul>
+          <li><span class="badge badge-ok">Bảng dữ liệu</span> — toàn bộ hóa đơn đọc thành công, mỗi ô có thể bấm vào để sửa trực tiếp.</li>
+          <li><span class="badge badge-warn">Hóa đơn trùng lặp</span> — các file bị loại vì trùng số hóa đơn với file khác (xem mục cảnh báo bên dưới).</li>
+          <li><span class="badge badge-err">File không đọc được</span> — các file bị lỗi, kèm lý do cụ thể.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <p><strong>Xuất file Excel</strong> bằng nút <strong>Xuất file Excel</strong>. Nếu trong lô có nhiều
+        người mua hàng khác nhau, file Excel sẽ tự động tách thành nhiều sheet — mỗi người mua một sheet riêng,
+        mỗi sheet có dòng tổng cộng tính riêng.</p>
+      </div>
+    </div>
+
+    <h2 id="u-canhbao">Các cảnh báo &amp; ý nghĩa</h2>
+
+    <table>
+      <thead><tr><th>Cảnh báo</th><th>Ý nghĩa</th><th>Bạn cần làm gì</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-err">File không đọc được</span></td>
+          <td>PDF thiếu dữ liệu bắt buộc (số hóa đơn, ngày, nội dung giao dịch, số tiền), hoặc file quá lớn (&gt;15MB).</td>
+          <td>Mở file gốc kiểm tra, hoặc nhập tay dòng đó nếu cần đưa vào báo cáo.</td>
+        </tr>
+        <tr>
+          <td>Hóa đơn có nhiều dòng hàng hóa</td>
+          <td>PDF có nhiều hơn 1 lượt qua trạm trong cùng một hóa đơn — công cụ chỉ hỗ trợ đúng 1 dòng/hóa đơn nên không tự gộp.</td>
+          <td>Mở file để kiểm tra và nhập tay nếu cần.</td>
+        </tr>
+        <tr>
+          <td>Số tiền không khớp dòng Tổng tiền</td>
+          <td>Số ở dòng hàng hóa lệch với dòng "Tổng tiền" trong PDF — có thể do file có định dạng khác thường.</td>
+          <td>Đối chiếu lại với file PDF gốc trước khi dùng số liệu.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-warn">Hóa đơn trùng lặp</span></td>
+          <td>Hai file khác tên nhưng cùng Ký hiệu + Số hóa đơn (ví dụ vô tình kéo trùng file). Bản trùng bị loại tự động, chỉ giữ 1 bản.</td>
+          <td>Không cần làm gì — chỉ nên xem lại danh sách để chắc chắn không phải 2 hóa đơn khác nhau bị trùng số một cách bất thường.</td>
+        </tr>
+        <tr>
+          <td>Ô "Số hóa đơn" / "Ngày HĐ" tô đỏ trong bảng</td>
+          <td>Bạn vừa sửa tay ô này thành rỗng — đây là 2 trường bắt buộc.</td>
+          <td>Điền lại giá trị trước khi xuất Excel.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="u-gioihan">Giới hạn hiện tại</h2>
+    <div class="callout">
+      <p><strong>Chỉ hỗ trợ PDF có lớp văn bản</strong> (chọn/copy được chữ) — đúng như hóa đơn điện tử VETC xuất ra.
+      Không hỗ trợ PDF dạng ảnh scan cần nhận diện ký tự quang học (OCR).</p>
+      <p><strong>Mỗi hóa đơn chỉ được có 1 dòng hàng hóa</strong> (1 lượt qua trạm). Hóa đơn gộp nhiều lượt sẽ bị đánh dấu lỗi thay vì tự động gộp — để tránh gán nhầm nội dung/số tiền.</p>
+      <p><strong>Giới hạn 15MB/file.</strong> Hóa đơn PDF thông thường chỉ vài trăm KB nên giới hạn này hiếm khi ảnh hưởng thực tế.</p>
+    </div>
+
+    <h2 id="u-hoi">Câu hỏi thường gặp</h2>
+
+    <h3>Dữ liệu của tôi có được gửi lên internet không?</h3>
+    <p>Không. Toàn bộ việc đọc PDF và tạo Excel diễn ra ngay trên trình duyệt của bạn. Không có bước nào tải file lên máy chủ.</p>
+
+    <h3>Vì sao một file PDF trông giống hệt các file khác lại bị báo lỗi?</h3>
+    <p>Một số hóa đơn VETC được xuất bằng công cụ khác (ví dụ bấm "In hóa đơn" trực tiếp thay vì tải bản "chuyển đổi") có thể dùng phông chữ nhúng khác nhau. Công cụ đã được cập nhật để đọc đúng cả hai kiểu PDF này; nếu vẫn gặp file bị bỏ qua, đó thường là do PDF thiếu một trong các trường bắt buộc — xem chi tiết lỗi trong danh sách "File không đọc được".</p>
+
+    <h3>Tôi có thể sửa dữ liệu sau khi công cụ đọc xong không?</h3>
+    <p>Có. Mọi ô trong bảng xem trước đều có thể bấm vào và sửa trực tiếp, kể cả tên người mua hàng. Thay đổi sẽ được giữ khi xuất Excel.</p>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ARCHITECTURE                                                  -->
+  <!-- ============================================================ -->
+  <section role="tabpanel" id="panel-arch" hidden aria-labelledby="tab-arch">
+
+    <div class="toc">
+      <a href="#a-tongquan">Tổng quan</a>
+      <a href="#a-cautruc">Cấu trúc thư mục</a>
+      <a href="#a-flow">Luồng hoạt động</a>
+      <a href="#a-parser">Module: pdf-parser.js</a>
+      <a href="#a-excel">Module: excel-builder.js</a>
+      <a href="#a-app">Module: app.js</a>
+      <a href="#a-rangbuoc">Bảng ràng buộc dữ liệu</a>
+      <a href="#a-mfamong">Điểm mở rộng trong tương lai</a>
+    </div>
+
+    <h2 id="a-tongquan">Tổng quan</h2>
+    <p>
+      Ứng dụng 100% client-side, không có backend, không build step — mở trực tiếp
+      <code>index.html</code> qua một static server là chạy được. Ba thư viện ngoài
+      đều tải qua CDN, không cần cài npm:
+    </p>
+    <div class="kv">
+      <dt>PDF.js</dt><dd>đọc text layer từ file PDF (<code>pdf.min.mjs</code> + worker riêng)</dd>
+      <dt>SheetJS (xlsx)</dt><dd>dựng workbook Excel và trigger tải file (<code>xlsx.full.min.js</code>)</dd>
+      <dt>Be Vietnam Pro</dt><dd>Google Font cho giao diện</dd>
+    </div>
+    <p>
+      Vì PDF.js được nạp bằng ES module động (<code>import</code>), trang <strong>phải</strong>
+      được phục vụ qua HTTP(S) (vd <code>npx serve</code>) — mở trực tiếp bằng
+      <code>file://</code> sẽ bị chặn bởi CORS module.
+    </p>
+
+    <h2 id="a-cautruc">Cấu trúc thư mục</h2>
+    <div class="card filetree">
+      D:\TNS_VECT_Converter\<br>
+      ├── index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--ink-soft)"># layout + input + bảng preview</span><br>
+      ├── styles.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--ink-soft)"># theme đỏ–vàng TNS</span><br>
+      ├── assets/<br>
+      │&nbsp;&nbsp;&nbsp;&nbsp;└── tns-logo.svg<br>
+      ├── js/<br>
+      │&nbsp;&nbsp;&nbsp;&nbsp;├── pdf-parser.js&nbsp;&nbsp;<span style="color:var(--ink-soft)"># PDF → text → dữ liệu hóa đơn (row)</span><br>
+      │&nbsp;&nbsp;&nbsp;&nbsp;├── excel-builder.js&nbsp;<span style="color:var(--ink-soft)"># rows → workbook nhiều sheet</span><br>
+      │&nbsp;&nbsp;&nbsp;&nbsp;└── app.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--ink-soft)"># điều phối UI, hàng đợi, sự kiện</span><br>
+      └── Data_test/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--ink-soft)"># PDF mẫu + Excel mẫu tham chiếu format</span>
+    </div>
+
+    <h2 id="a-flow">Luồng hoạt động</h2>
+    <p>Sơ đồ dưới mô tả một lượt xử lý đầy đủ, từ lúc người dùng thả file đến khi tải Excel về máy.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 900 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sơ đồ luồng xử lý">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
+          </marker>
+        </defs>
+        <style>
+          .box{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+          .box.accent{stroke:var(--red-mid);stroke-width:1.6}
+          .box.gold{stroke:var(--gold-dark);stroke-width:1.6}
+          .lbl{font:600 13px 'Inter',sans-serif;fill:var(--ink)}
+          .sub{font:11.5px 'Inter',sans-serif;fill:var(--ink-soft)}
+          .edge{stroke:var(--ink-soft);stroke-width:1.3;fill:none;marker-end:url(#arrow)}
+          .edge.split{stroke-dasharray:4 3}
+        </style>
+
+        <!-- User input -->
+        <rect class="box" x="330" y="10" width="240" height="46" rx="8"/>
+        <text class="lbl" x="450" y="30" text-anchor="middle">Người dùng thả / chọn PDF</text>
+        <text class="sub" x="450" y="45" text-anchor="middle">app.js — dropzone, input[type=file]</text>
+        <path class="edge" d="M450,56 V78"/>
+
+        <!-- Guard: large batch -->
+        <rect class="box gold" x="300" y="80" width="300" height="46" rx="8"/>
+        <text class="lbl" x="450" y="100" text-anchor="middle">&gt; 3.000 file?</text>
+        <text class="sub" x="450" y="115" text-anchor="middle">confirm() cảnh báo — Hủy thì dừng</text>
+        <path class="edge" d="M450,126 V148"/>
+
+        <!-- Queue -->
+        <rect class="box accent" x="260" y="150" width="380" height="60" rx="8"/>
+        <text class="lbl" x="450" y="174" text-anchor="middle">runQueue() — hàng đợi 6 worker song song</text>
+        <text class="sub" x="450" y="192" text-anchor="middle">app.js — cursor++ đồng bộ, không xử lý trùng file</text>
+        <path class="edge" d="M450,210 V232"/>
+
+        <!-- parsePdfInvoice -->
+        <rect class="box accent" x="230" y="234" width="440" height="46" rx="8"/>
+        <text class="lbl" x="450" y="254" text-anchor="middle">parsePdfInvoice(file) — pdf-parser.js</text>
+        <text class="sub" x="450" y="269" text-anchor="middle">kiểm tra kích thước → extractText → parseInvoiceText</text>
+        <path class="edge" d="M450,280 V302"/>
+
+        <!-- Decision: parse ok? -->
+        <rect class="box" x="350" y="304" width="200" height="46" rx="8"/>
+        <text class="lbl" x="450" y="324" text-anchor="middle">Đủ dữ liệu bắt buộc?</text>
+        <text class="sub" x="450" y="339" text-anchor="middle">missing.length === 0 ?</text>
+
+        <path class="edge" d="M350,327 H120 Q100,327 100,347 V 400" />
+        <text class="sub" x="105" y="365">Không</text>
+        <rect class="box" x="20" y="402" width="200" height="52" rx="8"/>
+        <text class="lbl" x="120" y="424" text-anchor="middle">errorRows.push()</text>
+        <text class="sub" x="120" y="440" text-anchor="middle">hiển thị panel "File không đọc được"</text>
+
+        <path class="edge" d="M550,327 H780 Q800,327 800,347 V400"/>
+        <text class="sub" x="805" y="365">Có</text>
+
+        <!-- Decision: duplicate? -->
+        <rect class="box" x="700" y="402" width="200" height="52" rx="8"/>
+        <text class="lbl" x="800" y="422" text-anchor="middle">Trùng Ký hiệu + Số HĐ?</text>
+        <text class="sub" x="800" y="438" text-anchor="middle">so với seenInvoiceKeys</text>
+
+        <path class="edge" d="M700,428 H620" />
+        <text class="sub" x="640" y="416">Có</text>
+        <rect class="box gold" x="440" y="402" width="170" height="52" rx="8"/>
+        <text class="lbl" x="525" y="424" text-anchor="middle">duplicateRows.push()</text>
+        <text class="sub" x="525" y="440" text-anchor="middle">panel "trùng lặp", loại khỏi kết quả</text>
+
+        <path class="edge" d="M800,454 V500"/>
+        <text class="sub" x="805" y="480">Không</text>
+
+        <!-- successRows -->
+        <rect class="box accent" x="680" y="502" width="220" height="52" rx="8"/>
+        <text class="lbl" x="790" y="524" text-anchor="middle">successRows.push()</text>
+        <text class="sub" x="790" y="540" text-anchor="middle">render 1 dòng vào bảng preview</text>
+
+        <!-- merge point -->
+        <path class="edge" d="M120,454 V620 H450"/>
+        <path class="edge" d="M525,454 V620 H450"/>
+        <path class="edge" d="M790,554 V620 H450"/>
+        <path class="edge" d="M450,620 V642"/>
+
+        <rect class="box" x="300" y="644" width="300" height="46" rx="8"/>
+        <text class="lbl" x="450" y="664" text-anchor="middle">Hết file trong hàng đợi?</text>
+        <text class="sub" x="450" y="679" text-anchor="middle">lặp lại runQueue cho tới khi xong</text>
+        <path class="edge" d="M450,690 V712"/>
+
+        <!-- Status summary -->
+        <rect class="box accent" x="260" y="714" width="380" height="60" rx="8"/>
+        <text class="lbl" x="450" y="738" text-anchor="middle">Cập nhật trạng thái tổng kết</text>
+        <text class="sub" x="450" y="756" text-anchor="middle">số người mua, số trùng lặp, bật nút "Xuất Excel"</text>
+        <path class="edge" d="M450,774 V796"/>
+
+        <!-- User reviews / edits -->
+        <rect class="box" x="280" y="798" width="340" height="52" rx="8"/>
+        <text class="lbl" x="450" y="820" text-anchor="middle">Người dùng xem trước &amp; sửa tay</text>
+        <text class="sub" x="450" y="836" text-anchor="middle">contenteditable — onCellEdit() ghi lại successRows[i]</text>
+        <path class="edge" d="M450,850 V872"/>
+
+        <!-- Export click -->
+        <rect class="box gold" x="300" y="874" width="300" height="46" rx="8"/>
+        <text class="lbl" x="450" y="894" text-anchor="middle">Bấm "Xuất file Excel"</text>
+        <text class="sub" x="450" y="909" text-anchor="middle">downloadWorkbook(successRows)</text>
+        <path class="edge" d="M450,920 V942"/>
+
+        <!-- groupByBuyer -->
+        <rect class="box accent" x="260" y="944" width="380" height="52" rx="8"/>
+        <text class="lbl" x="450" y="966" text-anchor="middle">groupByBuyer() — excel-builder.js</text>
+        <text class="sub" x="450" y="982" text-anchor="middle">nhóm theo (tên + MST) người mua</text>
+        <path class="edge" d="M450,996 V1018"/>
+
+        <!-- buildSheet per group -->
+        <rect class="box accent" x="230" y="1020" width="440" height="46" rx="8"/>
+        <text class="lbl" x="450" y="1048" text-anchor="middle">buildSheet() cho mỗi nhóm → XLSX.writeFile()</text>
+      </svg>
+    </div>
+
+    <h2 id="a-parser">Module: <code>pdf-parser.js</code></h2>
+    <p>Chịu trách nhiệm biến 1 file PDF thành 1 object dữ liệu hóa đơn ("row"). Gồm 3 bước:</p>
+
+    <h3>1. <code>extractText(file)</code> — đọc text layer</h3>
+    <ul>
+      <li>Chặn file &gt; <code>MAX_FILE_SIZE_BYTES</code> (15MB) trước khi đọc, ném lỗi rõ ràng.</li>
+      <li>Dùng PDF.js đọc từng trang riêng biệt (không gộp sớm) để có thể so sánh nội dung giữa các trang.</li>
+      <li><code>joinTextItems()</code> nối các text-item PDF.js trả về thành 1 chuỗi văn bản, quyết định khi nào
+      chèn xuống dòng (lệch trục Y) và khi nào chèn khoảng trắng (lệch trục X vượt ngưỡng theo chiều cao chữ).</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Vì sao không chèn khoảng trắng vô điều kiện giữa các item:</strong> một số PDF VETC (ví dụ
+      loại không qua bước "chuyển đổi từ hóa đơn điện tử") được render theo kiểu mỗi glyph là 1 text-item
+      riêng, kể cả tách rời chữ cái khỏi dấu thanh điệu tiếng Việt. Nếu chèn dấu cách vô điều kiện, các từ có
+      dấu bị xé vụn (<code>"Ký hiệu"</code> → <code>"K ý  hi ệ u"</code>) khiến toàn bộ regex phía sau không
+      khớp được nữa. Ngưỡng khoảng cách X tỉ lệ theo <code>item.height</code> giúp xử lý đúng cả hai kiểu PDF
+      (item-theo-từ và item-theo-glyph) mà không cần biết trước PDF thuộc loại nào.</p>
+    </div>
+
+    <h3>2. <code>parseInvoiceText(text, fileName)</code> — regex trích xuất trường</h3>
+    <p>Nhận chuỗi text đã chuẩn hóa, trả về <code>{ row, missing }</code>. Các trường và nguồn gốc:</p>
+    <table>
+      <thead><tr><th>Trường</th><th>Regex / nguồn</th><th>Ghi chú</th></tr></thead>
+      <tbody>
+        <tr><td><code>symbol</code></td><td><code>Ký hiệu[ \t]*:[ \t]*(\S+)</code></td><td>Bỏ ký tự số serial đầu tiên (<code>1K26TEF</code> → <code>K26TEF</code>)</td></tr>
+        <tr><td><code>invoiceNo</code></td><td><code>Số[ \t]*:[ \t]*\n?[ \t]*(\d+)</code></td><td>Chỉ chấp nhận 6–12 chữ số</td></tr>
+        <tr><td><code>invoiceDate</code></td><td><code>Ngày … tháng … năm …</code></td><td>Kiểm tra ngày 1–31, tháng 1–12 trước khi chấp nhận</td></tr>
+        <tr><td><code>buyerName</code>, <code>buyerAddress</code>, <code>buyerTaxCode</code></td><td>occurrence thứ 2 của "Địa chỉ"/"Mã số thuế" (thứ 1 là của bên bán VETC)</td><td>&nbsp;</td></tr>
+        <tr><td><code>plateNumber</code>, <code>station</code>, <code>transactionCode</code>, <code>receiptDateTime</code>, <code>content</code></td><td>1 regex tổng hợp trên dòng "Cước đường bộ xe…"</td><td>Khử trùng theo mã giao dịch để không đếm nhầm PDF nhiều trang lặp nội dung</td></tr>
+        <tr><td><code>amountBeforeTax</code>, <code>vatAmount</code>, <code>amountAfterTax</code></td><td>dòng "Tổng tiền: … … …"</td><td>Đối chiếu chéo với cột "Thành tiền chưa thuế" của dòng hàng hóa</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3. <code>parsePdfInvoice(file)</code> — điểm vào duy nhất cho <code>app.js</code></h3>
+    <p>Gọi 2 hàm trên; nếu <code>missing.length &gt; 0</code> thì <strong>throw</strong> Error kèm
+    <code>{ row, missing }</code> gắn vào object lỗi. <code>app.js</code> bắt lỗi này trong <code>try/catch</code>
+    của <code>runQueue()</code> và đẩy vào <code>errorRows</code> — không có cơ chế trả về "thành công một phần".</p>
+
+    <h2 id="a-excel">Module: <code>excel-builder.js</code></h2>
+    <ul>
+      <li><code>groupByBuyer(rows)</code> — nhóm theo key <code>tên|||MST</code>, giữ nguyên thứ tự nhóm xuất hiện đầu tiên.</li>
+      <li><code>buildSheet(rows)</code> — dựng 1 sheet: 6 dòng header (tên bên bán, tiêu đề, kỳ, tên/địa chỉ/MST người mua)
+      + dòng trống + header 15 cột + dữ liệu + dòng tổng (công thức <code>SUM</code> thật, Excel tự tính lại khi mở).</li>
+      <li><code>sanitizeSheetName(name, usedNames)</code> — loại ký tự Excel cấm, cắt 31 ký tự, thêm hậu tố
+      <code>(2)</code>, <code>(3)</code>… nếu trùng tên sau khi rút gọn.</li>
+      <li><code>buildWorkbook(rows)</code> — lặp qua từng nhóm người mua, gọi <code>buildSheet</code> + append vào workbook.</li>
+    </ul>
+    <p>Thứ tự 15 cột <strong>bám sát 1:1</strong> file mẫu <code>Data_test/ETCT8.xlsx</code>: STT, Ký hiệu hoá đơn,
+    Loại chứng từ điện tử, Số hóa đơn, Ngày phát sinh hóa đơn, Ngày phát sinh biên lai, Mã giao dịch, Biển số xe,
+    Nội dung hoá đơn, Số tiền chưa thuế, Số tiền thuế GTGT, Số tiền sau thuế, Trạm, Loại hoá đơn, Trạng thái hóa đơn.</p>
+
+    <h2 id="a-app">Module: <code>app.js</code></h2>
+    <p>Không chứa logic nghiệp vụ (parse/export) — chỉ điều phối UI và trạng thái phiên làm việc:</p>
+    <ul>
+      <li><strong>State toàn cục:</strong> <code>successRows</code>, <code>errorRows</code>, <code>duplicateRows</code> — reset mỗi lần bắt đầu lô mới (<code>resetState()</code>).</li>
+      <li><strong>Nhận input:</strong> 3 nguồn — <code>&lt;input type=file&gt;</code> (chọn file), <code>&lt;input webkitdirectory&gt;</code>
+      (chọn thư mục), và <code>drop</code> event (đệ quy qua <code>FileSystemDirectoryEntry</code> nếu người dùng kéo cả thư mục).</li>
+      <li><strong>Hàng đợi xử lý:</strong> <code>runQueue()</code> — mô hình worker pool, <code>CONCURRENCY = 6</code> worker
+      cùng rút file từ 1 con trỏ <code>cursor</code> dùng chung (an toàn vì JS đơn luồng, tăng <code>cursor</code> là thao tác đồng bộ).</li>
+      <li><strong>Khử trùng lặp:</strong> <code>Map</code> <code>seenInvoiceKeys</code> theo key <code>symbol|||invoiceNo</code>,
+      kiểm tra + ghi ngay sau <code>await parsePdfInvoice()</code> mà không có <code>await</code> nào xen giữa — tránh race condition giữa các worker.</li>
+      <li><strong>Bảng preview:</strong> mỗi ô <code>contenteditable</code>, sự kiện <code>blur</code> gọi <code>onCellEdit()</code>
+      ghi thẳng vào <code>successRows[index]</code> — đây là bản duy nhất được dùng khi xuất Excel (không có bản sao riêng).</li>
+    </ul>
+
+    <h2 id="a-rangbuoc">Bảng ràng buộc dữ liệu hiện có</h2>
+    <table>
+      <thead><tr><th>#</th><th>Ràng buộc</th><th>Nơi xử lý</th><th>Hành vi khi vi phạm</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>File &gt; 15MB</td><td><code>extractText()</code></td><td>Throw lỗi trước khi đọc PDF</td></tr>
+        <tr><td>2</td><td>Thiếu Số HĐ / Ngày HĐ / Nội dung GD / Tổng tiền</td><td><code>parseInvoiceText()</code></td><td>Đẩy vào <code>missing[]</code> → lỗi</td></tr>
+        <tr><td>3</td><td>Số hóa đơn ngoài phạm vi 6–12 chữ số</td><td><code>parseInvoiceText()</code></td><td>Coi như không tìm thấy (<code>invoiceNo = ''</code>)</td></tr>
+        <tr><td>4</td><td>Ngày/tháng ngoài phạm vi lịch hợp lệ</td><td><code>parseInvoiceText()</code></td><td>Coi như không tìm thấy (<code>invoiceDate = ''</code>)</td></tr>
+        <tr><td>5</td><td>&gt;1 dòng hàng hóa thực sự khác nhau trong 1 hóa đơn</td><td><code>parseInvoiceText()</code> (khử trùng theo mã GD trước khi đếm)</td><td>Đẩy vào <code>missing[]</code> → lỗi, không tự gộp</td></tr>
+        <tr><td>6</td><td>Số tiền dòng hàng hóa ≠ dòng Tổng tiền</td><td><code>parseInvoiceText()</code></td><td>Đẩy vào <code>missing[]</code> → lỗi</td></tr>
+        <tr><td>7</td><td>2 file cùng Ký hiệu + Số HĐ</td><td><code>runQueue()</code> trong <code>app.js</code></td><td>Giữ bản đầu, bản sau vào <code>duplicateRows</code></td></tr>
+        <tr><td>8</td><td>&gt;3.000 file trong 1 lô</td><td><code>handleFiles()</code></td><td><code>confirm()</code> cảnh báo mềm, không chặn cứng</td></tr>
+        <tr><td>9</td><td>Sửa tay ô bắt buộc thành rỗng</td><td><code>onCellEdit()</code></td><td>Tô class <code>.cell-error</code>, không chặn xuất</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="a-mfamong">Điểm mở rộng trong tương lai</h2>
+    <div class="callout">
+      <p><strong>Nếu cần hỗ trợ hóa đơn nhiều dòng hàng hóa thật sự:</strong> sửa <code>parseInvoiceText()</code> để trả về
+      <strong>mảng nhiều row</strong> thay vì 1 row cho mỗi PDF (mỗi <code>txMatches[i]</code> → 1 row, dùng chung
+      symbol/invoiceNo/invoiceDate), và validate tổng 3 cột tiền của các row con phải khớp dòng "Tổng tiền".</p>
+      <p><strong>Nếu cần thêm loại hóa đơn khác</strong> ngoài VETC: tách phần regex đặc thù VETC ra khỏi
+      <code>parseInvoiceText()</code> thành 1 "adapter" riêng, để <code>app.js</code>/<code>excel-builder.js</code>
+      không cần biết cấu trúc PDF cụ thể của từng nhà cung cấp.</p>
+      <p><strong>Nếu dữ liệu cần đối chiếu ngược với hệ thống khác</strong> (ví dụ so khớp với bảng kê gốc của VETC):
+      trường <code>row.pageCount</code> và toàn bộ text gốc hiện chưa được lưu lại sau khi parse xong — cân nhắc giữ lại
+      text thô trong <code>row</code> nếu cần audit sau này.</p>
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+  const tabUser = document.getElementById('tab-user');
+  const tabArch = document.getElementById('tab-arch');
+  const panelUser = document.getElementById('panel-user');
+  const panelArch = document.getElementById('panel-arch');
+
+  function activate(tab){
+    const isUser = tab === 'user';
+    tabUser.setAttribute('aria-selected', String(isUser));
+    tabArch.setAttribute('aria-selected', String(!isUser));
+    tabUser.tabIndex = isUser ? 0 : -1;
+    tabArch.tabIndex = isUser ? -1 : 0;
+    panelUser.hidden = !isUser;
+    panelArch.hidden = isUser;
+    try { localStorage.setItem('tns-docs-tab', tab); } catch(e) {}
+  }
+
+  tabUser.addEventListener('click', () => activate('user'));
+  tabArch.addEventListener('click', () => activate('arch'));
+
+  [tabUser, tabArch].forEach((tab, i, arr) => {
+    tab.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        arr[1 - i].focus();
+        activate(i === 0 ? 'arch' : 'user');
+      }
+    });
+  });
+
+  try {
+    const saved = localStorage.getItem('tns-docs-tab');
+    if (saved === 'arch') activate('arch');
+  } catch(e) {}
+</script>
+
+</body></html>
