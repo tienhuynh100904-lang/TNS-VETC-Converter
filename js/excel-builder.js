@@ -197,5 +197,5 @@ export function downloadWorkbook(rows) {
     String(now.getHours()).padStart(2, '0'),
     String(now.getMinutes()).padStart(2, '0'),
   ].join('');
-  XLSX.writeFile(wb, `TNS_VECT_Converter_${stamp}.xlsx`);
+  XLSX.writeFile(wb, `TNS_VETC_Converter_${stamp}.xlsx`);
 }

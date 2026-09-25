@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TNS VECT Converter — Chuyển đổi PDF hóa đơn VETC sang Excel</title>
+<title>TNS VETC Converter — Chuyển đổi PDF hóa đơn VETC sang Excel</title>
 <link rel="icon" type="image/svg+xml" href="assets/tns-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
     <div class="brand">
       <img src="assets/tns-logo.svg" alt="Tôn Tây Nam" class="brand-logo">
       <div class="brand-text">
-        <span class="brand-title">TNS VECT Converter</span>
+        <span class="brand-title">TNS VETC Converter</span>
         <span class="brand-subtitle">Chuyển đổi hàng loạt hóa đơn PDF VETC sang Excel</span>
       </div>
     </div>
@@ -58,6 +58,28 @@
     <div class="status-actions">
       <button type="button" id="btnExport" class="btn btn-gold" disabled>Xuất file Excel</button>
       <button type="button" id="btnClear" class="btn btn-ghost">Xóa danh sách</button>
+    </div>
+  </section>
+
+  <section class="panel summary-panel" id="summaryPanel" hidden>
+    <h3 class="summary-title">Thống kê tổng hợp</h3>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <span class="summary-label">Số hóa đơn</span>
+        <span class="summary-value" id="sumInvoiceCount">0</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Tổng tiền chưa thuế</span>
+        <span class="summary-value" id="sumBeforeTax">0</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Tổng tiền thuế GTGT</span>
+        <span class="summary-value" id="sumVat">0</span>
+      </div>
+      <div class="summary-card summary-card-highlight">
+        <span class="summary-label">Tổng tiền sau thuế</span>
+        <span class="summary-value" id="sumAfterTax">0</span>
+      </div>
     </div>
   </section>
 
@@ -107,7 +129,7 @@
 </main>
 
 <footer class="app-footer">
-  <span>© 2026 TNS VECT Converter — Tôn Tây Nam - CT9</span>
+  <span>© 2026 TNS VETC Converter — Tôn Tây Nam - CT9</span>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>

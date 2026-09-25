@@ -24,6 +24,12 @@ const duplicatesPanel = document.getElementById('duplicatesPanel');
 const duplicateList = document.getElementById('duplicateList');
 const dupCount = document.getElementById('dupCount');
 
+const summaryPanel = document.getElementById('summaryPanel');
+const sumInvoiceCount = document.getElementById('sumInvoiceCount');
+const sumBeforeTax = document.getElementById('sumBeforeTax');
+const sumVat = document.getElementById('sumVat');
+const sumAfterTax = document.getElementById('sumAfterTax');
+
 const tablePanel = document.getElementById('tablePanel');
 const dataTableBody = document.getElementById('dataTableBody');
 const rowCount = document.getElementById('rowCount');
@@ -51,6 +57,7 @@ function resetState() {
   dataTableBody.innerHTML = '';
   errorList.innerHTML = '';
   statusPanel.hidden = true;
+  summaryPanel.hidden = true;
   errorsPanel.hidden = true;
   duplicatesPanel.hidden = true;
   duplicateList.innerHTML = '';
@@ -124,6 +131,7 @@ function onCellEdit(td, index, field) {
     successRows[index][field] = raw;
   }
   td.classList.toggle('cell-error', REQUIRED_FIELDS.includes(field) && raw === '');
+  if (isMoney) updateSummary();
 }
 
 function updateCounts() {
@@ -131,6 +139,22 @@ function updateCounts() {
   countOk.textContent = String(successRows.length);
   countErr.textContent = String(errorRows.length);
   rowCount.textContent = String(successRows.length);
+  updateSummary();
+}
+
+function updateSummary() {
+  summaryPanel.hidden = successRows.length === 0;
+  const totals = successRows.reduce((acc, row) => {
+    acc.before += Number(row.amountBeforeTax) || 0;
+    acc.vat += Number(row.vatAmount) || 0;
+    acc.after += Number(row.amountAfterTax) || 0;
+    return acc;
+  }, { before: 0, vat: 0, after: 0 });
+
+  sumInvoiceCount.textContent = formatNumber(successRows.length);
+  sumBeforeTax.textContent = formatNumber(totals.before) + ' đ';
+  sumVat.textContent = formatNumber(totals.vat) + ' đ';
+  sumAfterTax.textContent = formatNumber(totals.after) + ' đ';
 }
 
 function renderErrors() {
