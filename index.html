@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TNS VECT Converter — Chuyển đổi PDF hóa đơn VETC sang Excel</title>
+<link rel="icon" type="image/svg+xml" href="assets/tns-logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/tns-logo.svg" alt="Tôn Tây Nam" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-title">TNS VECT Converter</span>
+        <span class="brand-subtitle">Chuyển đổi hàng loạt hóa đơn PDF VETC sang Excel</span>
+      </div>
+    </div>
+    <a class="brand-link" href="https://tontaynam.com.vn/" target="_blank" rel="noopener">tontaynam.com.vn</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="panel upload-panel">
+    <div id="dropzone" class="dropzone">
+      <input type="file" id="fileInput" accept=".pdf" multiple hidden>
+      <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+      <div class="dropzone-icon">📄</div>
+      <p class="dropzone-title">Kéo &amp; thả file PDF hóa đơn vào đây</p>
+      <p class="dropzone-hint">Hỗ trợ hàng nghìn file cùng lúc</p>
+      <p class="dropzone-hint dropzone-hint-sub" id="sizeLimitHint"></p>
+      <div class="dropzone-actions">
+        <button type="button" id="btnPickFiles" class="btn btn-primary">Chọn file PDF</button>
+        <button type="button" id="btnPickFolder" class="btn btn-outline">Chọn thư mục</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel status-panel" id="statusPanel" hidden>
+    <div class="status-row">
+      <div class="status-summary">
+        <span id="statusText">Đang xử lý…</span>
+      </div>
+      <div class="status-counts">
+        <span class="pill pill-total">Tổng: <b id="countTotal">0</b></span>
+        <span class="pill pill-ok">Thành công: <b id="countOk">0</b></span>
+        <span class="pill pill-err">Lỗi: <b id="countErr">0</b></span>
+      </div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="status-actions">
+      <button type="button" id="btnExport" class="btn btn-gold" disabled>Xuất file Excel</button>
+      <button type="button" id="btnClear" class="btn btn-ghost">Xóa danh sách</button>
+    </div>
+  </section>
+
+  <section class="panel errors-panel" id="errorsPanel" hidden>
+    <h3>Các file không đọc được (<span id="errCount">0</span>)</h3>
+    <ul id="errorList" class="error-list"></ul>
+  </section>
+
+  <section class="panel errors-panel duplicates-panel" id="duplicatesPanel" hidden>
+    <h3>Hóa đơn trùng lặp đã tự động loại bỏ (<span id="dupCount">0</span>)</h3>
+    <ul id="duplicateList" class="error-list"></ul>
+  </section>
+
+  <section class="panel table-panel" id="tablePanel" hidden>
+    <div class="table-panel-header">
+      <h3>Xem trước dữ liệu (<span id="rowCount">0</span> dòng) — có thể chỉnh sửa trực tiếp trước khi xuất</h3>
+      <input type="text" id="searchBox" class="search-box" placeholder="Tìm theo biển số, số hóa đơn, trạm…">
+    </div>
+    <div class="table-scroll">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Người mua hàng</th>
+            <th>Ký hiệu HĐ</th>
+            <th>Loại CTĐT</th>
+            <th>Số hóa đơn</th>
+            <th>Ngày HĐ</th>
+            <th>Ngày biên lai</th>
+            <th>Mã giao dịch</th>
+            <th>Biển số xe</th>
+            <th>Nội dung hóa đơn</th>
+            <th>Tiền chưa thuế</th>
+            <th>Tiền thuế GTGT</th>
+            <th>Tiền sau thuế</th>
+            <th>Trạm</th>
+            <th>Loại HĐ</th>
+            <th>Trạng thái</th>
+            <th>File nguồn</th>
+          </tr>
+        </thead>
+        <tbody id="dataTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <span>© 2026 TNS VECT Converter — Tôn Tây Nam - CT9</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
